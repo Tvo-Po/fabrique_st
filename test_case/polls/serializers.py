@@ -71,29 +71,29 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = ('number', 'text', 'type', 'options')
         list_serializer_class = QuestionListSerializer
 
-        def create(self, validated_data):
-            """
-            Переопределение создания сущности через сериализатор для
-            создания вопроса с вложеннымми в него вариантами ответа
-            """
-            answer_options_validated_data = validated_data.pop('options')
-            question = super().create(validated_data)
-            options_serializer = self.fields['options']
-            for each in answer_options_validated_data:
-                each['question'] = question
-            answer_options = options_serializer.create(answer_options_validated_data)
-            return question
+    def create(self, validated_data):
+        """
+        Переопределение создания сущности через сериализатор для
+        создания вопроса с вложеннымми в него вариантами ответа
+        """
+        answer_options_validated_data = validated_data.pop('options')
+        question = super().create(validated_data)
+        options_serializer = self.fields['options']
+        for each in answer_options_validated_data:
+            each['question'] = question
+        answer_options = options_serializer.create(answer_options_validated_data)
+        return question
 
-        def update(self, instance, validated_data):
-            """
-            Переопределение обновления сущности через сериализатор для
-            создания вопроса с вложеннымми в него вариантами ответа
-            """
-            answer_options_validated_data = validated_data.pop('options')
-            instance = super().update(instance, validated_data)
-            options_serializer = self.fields['options']
-            answer_options = options_serializer.update(instance, answer_options_validated_data)
-            return instance
+    def update(self, instance, validated_data):
+        """
+        Переопределение обновления сущности через сериализатор для
+        создания вопроса с вложеннымми в него вариантами ответа
+        """
+        answer_options_validated_data = validated_data.pop('options')
+        instance = super().update(instance, validated_data)
+        options_serializer = self.fields['options']
+        answer_options = options_serializer.update(instance, answer_options_validated_data)
+        return instance
 
 
 class PollDetailSerializer(serializers.ModelSerializer):

@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  pgsql_db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=polls_db
+      - POSTGRES_USER=postgre
+      - POSTGRES_PASSWORD=123456
+    container_name: postgres_db
+  backend:
+    build: ./test_case
+    volumes:
+      - ./test_case:/usr/src/fabrique_st
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./test_case/test_case/.env
+    command: bash -c "python /usr/src/fabrique_st/manage.py migrate &&
+             python /usr/src/fabrique_st/db_script.py &&
+             python /usr/src/fabrique_st/manage.py runserver 0.0.0.0:8000"
+    container_name: django_backend
+    depends_on:
+      - pgsql_db

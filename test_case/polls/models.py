@@ -7,7 +7,7 @@ class Poll(models.Model):
     """
     Представление опроса
     """
-    slug = models.SlugField(max_length=50)
+    slug = models.SlugField(max_length=50, unique=True)
     title = models.CharField(max_length=100)
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField(blank=True, null=True)
@@ -68,7 +68,7 @@ class Answer(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     question = models.ForeignKey('Question', on_delete=models.CASCADE, related_name='answers')
     text = models.TextField(blank=True)
-    chosen_answers = models.ManyToManyField('AnswerOption', blank=True, null=True)
+    chosen_answers = models.ManyToManyField('AnswerOption', blank=True)
     complete_time = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
