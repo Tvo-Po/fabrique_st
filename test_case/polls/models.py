@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
+from rest_framework.exceptions import ValidationError
 
 
 class Poll(models.Model):
@@ -57,3 +59,19 @@ class AnswerOption(models.Model):
 
     def __str__(self):
         return f"{self.question.text}: * {self.text}"
+
+
+class Answer(models.Model):
+    """
+    Представление ответов пользователей на вопросы
+    """
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    question = models.ForeignKey('Question', on_delete=models.CASCADE, related_name='answers')
+    text = models.TextField(blank=True)
+    chosen_answers = models.ManyToManyField('AnswerOption', blank=True, null=True)
+    complete_time = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not (self.text or self.chosen_answers):
+            raise ValidationError('Answer model must contain text or chosen answers')

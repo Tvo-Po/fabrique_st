@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Poll, Question, AnswerOption
+from .models import Poll, Question, AnswerOption, Answer
 
 
 class PollListSerializer(serializers.ModelSerializer):
@@ -128,3 +128,21 @@ class PollDetailSerializer(serializers.ModelSerializer):
         questions_serializer = self.fields['questions']
         questions = questions_serializer.update(instance, questions_validated_data)
         return instance
+
+
+class AnswerListSerializer(serializers.ModelSerializer):
+
+    chosen_answers = AnswerOptionSerializer(many=True)
+    question = serializers.StringRelatedField()
+
+    class Meta:
+        model = Answer
+        fields = ('question', 'text', 'chosen_answers')
+
+
+class PollResultSerializer(serializers.Serializer):
+    """
+    Сериализатор для обработки заполненной анкеты
+    """
+    poll = PollListSerializer()
+    answers = AnswerListSerializer(many=True)
