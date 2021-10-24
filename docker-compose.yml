@@ -19,7 +19,6 @@ services:
     env_file:
       - ./test_case/test_case/.env
     command: bash -c "python /usr/src/fabrique_st/manage.py migrate &&
-             python /usr/src/fabrique_st/db_script.py &&
              python /usr/src/fabrique_st/manage.py runserver 0.0.0.0:8000"
     container_name: django_backend
     depends_on:
