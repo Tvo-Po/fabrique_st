@@ -111,7 +111,7 @@ def populate():
         if i / tries_amount >= 0.50 and printed_waiting == 1:
             print('............50%')
             printed_waiting = 2
-        if i / tries_amount >= 0.75 and printed_waiting == 1:
+        if i / tries_amount >= 0.75 and printed_waiting == 2:
             print('....................75%')
             printed_waiting = 3
     print('DB population ends...')
