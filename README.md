@@ -11,6 +11,7 @@
 4. Запустить контейнеры командой: docker-compose up (при первом разворачивании бэкэнд обычно подимается быстрее БД, если он не схватил порты - дождитесь разворачивания postgre и перезапустите контейнеры - CTRL+C, docker-compose up)
 5. После того, как сервер запустился в другом терминале выполнить команду: docker exec -it djago_backend bash
 6. Запустить скрипт на заполнение базы данных: python db_script.py
+7. Помимо заполнения БД, будет создан администратор {username: admin, password: admin}, и пользователи [ {username: riddler, password: riddler}, {username: advisor, password: advisor}, {username: bear, password: bear} ]
 ----------------------
 # Документация по API: #
 * ### api/polls/ ###

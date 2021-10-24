@@ -6,7 +6,6 @@ from django.db import IntegrityError
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'test_case.settings')
 django.setup()
 
-import asyncio
 
 from polls.models import Poll, Question, AnswerOption, Answer
 from script_utils import generate_words, generate_poll_period
@@ -66,7 +65,7 @@ def generate_questions(poll, users):
                 )
 
 
-async def populate():
+def populate():
     print('DB population begins...')
     printed_waiting = 0
     tries_amount = 60
@@ -117,4 +116,4 @@ async def populate():
             printed_waiting = 3
     print('DB population ends...')
 
-asyncio.run(populate())
+populate()
